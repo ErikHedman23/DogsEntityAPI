@@ -7,7 +7,7 @@ namespace Dogs.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            // default constructor
+            // default constructor for the database
         }
 
         public DbSet<Dog> Dogs { get; set; }

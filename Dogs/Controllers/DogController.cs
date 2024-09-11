@@ -12,10 +12,11 @@ namespace Dogs.Controllers
         private readonly DataContext _context;
         public DogController(DataContext context)
         {
-            _context = context;
+            _context = context; // dependency injection for the database from DataContext to access our "DefaultConnection"
+                                // so that we can alter the database.
         }
 
-        [HttpGet]
+        [HttpGet] // Read
         public async Task<ActionResult<List<Dog>>> GetAllDogs() //Allows me to see the types for each of the properties for this object
         {
             var dogs = await _context.Dogs.ToListAsync();
@@ -23,7 +24,7 @@ namespace Dogs.Controllers
             return Ok(dogs);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] // using the value from /api/Dog/{id} as the direct route
         public async Task<ActionResult<Dog>> GetDog(int id) 
         {
             var dog = await _context.Dogs.FindAsync(id);
@@ -33,16 +34,16 @@ namespace Dogs.Controllers
             return Ok(dog);
         }
 
-        [HttpPost]
+        [HttpPost] //Create
         public async Task<ActionResult<List<Dog>>> AddDog(Dog dog) 
         {
             _context.Dogs.Add(dog);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Dogs.ToListAsync());
+            return Ok(await _context.Dogs.ToListAsync()); // returning a list of the current dogs and the new one
         }
 
-        [HttpPut]
+        [HttpPut] //Update
         public async Task<ActionResult<List<Dog>>> UpdateDog(Dog updatedDog)
         {
             var dbDog = await _context.Dogs.FindAsync(updatedDog.Id);
@@ -56,10 +57,10 @@ namespace Dogs.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Dogs.ToListAsync());
+            return Ok(await _context.Dogs.ToListAsync()); // returning a list of the updated dogs
         }
 
-        [HttpDelete]
+        [HttpDelete] //Delete
         public async Task<ActionResult<List<Dog>>> DeleteDog(int id)
         {
             var dbDog = await _context.Dogs.FindAsync(id);
@@ -69,7 +70,7 @@ namespace Dogs.Controllers
             _context.Dogs.Remove(dbDog);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Dogs.ToListAsync());
+            return Ok(await _context.Dogs.ToListAsync()); // returning an updated list of dogs without the one removed
         }
     }
 }
