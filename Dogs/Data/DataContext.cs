@@ -1,6 +1,5 @@
 ﻿using Dogs.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace Dogs.Data
 {
@@ -8,7 +7,7 @@ namespace Dogs.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+            // default constructor
         }
 
         public DbSet<Dog> Dogs { get; set; }
